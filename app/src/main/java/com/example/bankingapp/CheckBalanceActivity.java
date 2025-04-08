@@ -16,21 +16,21 @@ public class CheckBalanceActivity extends AppCompatActivity {
     private TextView balanceTextView;
     private MaterialButton checkBalanceButton;
 
-    // Simulated account balance (Replace with real data retrieval logic)
-    private final double accountBalance = 1500.75; // Example balance
+
+    private final double accountBalance = 1500.75;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance_checker);
 
-        // Initialize UI elements
+
         pinEditText = findViewById(R.id.pinEditText);
         balanceContainer = findViewById(R.id.balanceContainer);
         balanceTextView = findViewById(R.id.balanceTextView);
         checkBalanceButton = findViewById(R.id.checkBalanceButton);
 
-        // Set up button click listener
+
         checkBalanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +55,7 @@ public class CheckBalanceActivity extends AppCompatActivity {
         }
     }
 
-    // Simulated PIN validation (Replace with actual authentication logic)
+
     private boolean validatePin(String pin) {
         return pin.equals("1234"); // Example PIN for testing
     }
