@@ -18,7 +18,7 @@ public class HomeActivity extends AppCompatActivity {
         Button Beneficiary = findViewById(R.id.button5);
         Button govt = findViewById(R.id.button6);
         Button transfer = findViewById(R.id.button9);
-
+        String senderPassword = getIntent().getStringExtra("senderPassword");
         checkBalanceButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, CheckBalanceActivity.class);
             startActivity(intent);
@@ -28,8 +28,9 @@ public class HomeActivity extends AppCompatActivity {
         Beneficiary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent i=new Intent(HomeActivity.this,BeneficiaryManagementActivity.class);
-               startActivity(i);
+                Intent intent = new Intent(HomeActivity.this, BeneficiaryManagementActivity.class);
+                intent.putExtra("senderPassword", senderPassword);  // 👈 pass it forward
+                startActivity(intent);
 
             }
         });

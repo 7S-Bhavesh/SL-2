@@ -1,11 +1,15 @@
 package com.example.bankingapp;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -16,27 +20,17 @@ public class CheckBalanceActivity extends AppCompatActivity {
     private TextView balanceTextView;
     private MaterialButton checkBalanceButton;
 
-
-    private final double accountBalance = 1500.75;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance_checker);
-
 
         pinEditText = findViewById(R.id.pinEditText);
         balanceContainer = findViewById(R.id.balanceContainer);
         balanceTextView = findViewById(R.id.balanceTextView);
         checkBalanceButton = findViewById(R.id.checkBalanceButton);
 
-
-        checkBalanceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkBalance();
-            }
-        });
+        checkBalanceButton.setOnClickListener(v -> checkBalance());
     }
 
     private void checkBalance() {
@@ -47,16 +41,21 @@ public class CheckBalanceActivity extends AppCompatActivity {
             return;
         }
 
-        if (validatePin(enteredPin)) {
+        SQLiteDatabase db = openOrCreateDatabase("BankingApp.db", MODE_PRIVATE, null);
+
+        Cursor cursor = db.rawQuery("SELECT bank_account, balance FROM users WHERE password = ?", new String[]{enteredPin});
+
+        if (cursor.moveToFirst()) {
+            String account = cursor.getString(0);
+            double balance = cursor.getDouble(1);
+
             balanceContainer.setVisibility(View.VISIBLE);
-            balanceTextView.setText("Your Balance: $" + accountBalance);
+            balanceTextView.setText("Account: " + account + "\nYour Balance: ₹" + balance);
         } else {
             Toast.makeText(this, "Invalid PIN. Please try again.", Toast.LENGTH_SHORT).show();
         }
-    }
 
-
-    private boolean validatePin(String pin) {
-        return pin.equals("1234"); // Example PIN for testing
+        cursor.close();
+        db.close();
     }
 }

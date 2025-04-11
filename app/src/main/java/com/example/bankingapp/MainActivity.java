@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         Button registerButton = findViewById(R.id.registerButton1);
         TextView noAccountText = findViewById(R.id.noAcc);
 
-        // Navigate to LoginActivity
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Navigate to RegisterActivity
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Navigate to RegisterActivity from "Don't have an account yet?"
         noAccountText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

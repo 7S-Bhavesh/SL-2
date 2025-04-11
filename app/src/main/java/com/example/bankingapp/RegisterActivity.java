@@ -3,6 +3,8 @@ package com.example.bankingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.database.sqlite.SQLiteDatabase;
+import android.content.ContentValues;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -31,7 +33,6 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(v -> registerUser());
     }
 
-
     private void registerUser() {
         String nameInput = name.getText().toString().trim();
         String emailInput = email.getText().toString().trim();
@@ -56,8 +57,32 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(this, "Register Successful", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-        finish();
+        // Open or create the database and table with an additional 'balance' column
+        SQLiteDatabase db = openOrCreateDatabase("BankingApp.db", MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS users (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT, " +
+                "email TEXT, " +
+                "password TEXT, " +
+                "bank_account TEXT, " +
+                "balance INTEGER)");
+
+        ContentValues values = new ContentValues();
+        values.put("name", nameInput);
+        values.put("email", emailInput);
+        values.put("password", passInput);
+        values.put("bank_account", bankInput);
+        values.put("balance", 10000); // 🆕 Initial balance set to 10000
+
+        long result = db.insert("users", null, values);
+        db.close();
+
+        if (result != -1) {
+            Toast.makeText(this, "Register Successful", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            finish();
+        } else {
+            Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
+        }
     }
 }
