@@ -17,13 +17,17 @@ private Button btn;
 
         TextView tvName = findViewById(R.id.tvName);
         TextView tvAccountNumber = findViewById(R.id.tvAccountNumber);
+        String senderPassword = getIntent().getStringExtra("senderPassword");
        btn=findViewById(R.id.money);
 
       btn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              Intent i=new Intent(BeneficiaryManagementActivity.this,TransferActivity.class);
+              Intent i = new Intent(BeneficiaryManagementActivity.this, TransferActivity.class);
+              i.putExtra("receiverName", "Aarav Mehta");
+              i.putExtra("senderPassword", senderPassword);  // 👈 pass it again
               startActivity(i);
+
           }
       });
 
